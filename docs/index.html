@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <title>Plotting Gallery</title>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css'/>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/prism.min.js' data-manual></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/components/prism-python.min.js' data-manual></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src='assets/nbv.js'></script>
+    <style type="text/css">
+      /* body {
+         font: 0.8em Arial, sans-serif;
+         background-color: #eee;
+         } */
+      body {
+        margin: 0;
+        font-family: 'Lato', sans-serif;
+        background-color: #eee;
+      }
+      div#instructions {
+        max-width: 960px;
+        font-size: 2em;
+        color: rgb(108, 108, 108);
+        text-align: center;
+        padding-top: 10%;
+        margin: 0 auto;
+      }
+      div#instructions small {
+        font-size: 0.7em;
+      }
+      div#dropzone {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+        background-color: #7d7;
+        opacity: 0;
+        transition: visibility 500ms, opacity 500ms;
+      }
+      select#file-selector {
+        display: none;
+        /*display: block;*/
+        font-size: 2em;
+        margin: 0 auto;
+      }
+      button#download-notebook {
+        display: none;
+        margin: 1em auto 0 auto;
+      }
+      input#github-link {
+        font-size: 1em;
+        text-align: center;
+        width: 60%;
+        margin: 0.3em auto;
+      }
+      input#github-link::placeholder {
+        color: #ccc;
+      }
+      div#serving-info {
+        font-size: 1.2em;
+        font-style: italic;
+        margin-top: 1em;
+        text-align: center;
+      }
+      div#contact {
+        width: 42em;
+        margin: 5em auto 0 auto;
+        font-style: italic;
+      }
+      .sidebar {
+        margin: 0;
+        padding: 0;
+        width: 200px;
+        background-color: #f1f1f1;
+        position: fixed;
+        height: 100%;
+        overflow: auto;
+      }
+      .sidebar a {
+        display: block;
+        color: black;
+        padding: 16px;
+        text-decoration: none;
+      }
+      .sidebar a.active {
+        background-color: #04aa6d;
+        color: white;
+      }
+      .sidebar a:hover:not(.active) {
+        background-color: #555;
+        color: white;
+      }
+      div.content {
+        margin-left: 200px;
+        padding: 1px 16px;
+        height: 1000px;
+      }
+      @media screen and (max-width: 700px) {
+        .sidebar {
+          width: 100%;
+          height: auto;
+          position: relative;
+        }
+        .sidebar a {
+          float: left;
+        }
+        div.content {
+          margin-left: 0;
+        }
+      }
+      @media screen and (max-width: 400px) {
+        .sidebar a {
+          text-align: center;
+          float: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar">
+      <a class="active" href="#home">Home</a>
+      <div id="sidebar_ipynb">
+        <!-- <a href="#news">News</a>
+               <a href="#contact">Contact</a>
+               <a href="#about">About</a> -->
+      </div>
+    </div>
+    <div class="content">
+      <!-- <a href="https://github.com/kokes/nbviewer.js"
+        ><img
+          style="position: absolute; top: 0; right: 0; border: 0"
+          src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67"
+          alt="Fork me on GitHub"
+          data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"
+      /></a> -->
+      <div id="doc">
+        <select id="file-selector"></select>
+        <button id="download-notebook">Download this notebook in HTML</button>
+        <div id="instructions">
+          Drag and drop Jupyter notebooks anywhere here...<br />
+          or paste a link from Github: <br />
+          <input id="github-link" placeholder="https://github.com/..." />
+        </div>
+        <div id="serving-info"></div>
+        <div id="notebook-content"></div>
+      </div>
+      <div id="contact"></div>
+    </div>
+
+    <script type="text/javascript">
+      const target_repo = 'soraxas/plotting-gallery'
+      const d = document
+      const doc = d.getElementById('doc')
+      const download_notebook = d.getElementById('download-notebook')
+      if (!window.marked || !window.Prism || !window.katex) {
+        throw new Error(
+          'expecting libraries marked.js, Prism.js and KaTeX to be present'
+        )
+      }
+      const notebook_viewer = nbv_constructor(d, {
+        katex: window.katex,
+        prism: window.Prism,
+        marked: window.marked
+      })
+
+      download_notebook.addEventListener('click', function () {
+        var nbs = d.querySelectorAll('div.rendered-notebook')
+        for (var j = 0; j < nbs.length; j++) {
+          if (nbs[j].style.display == 'none') continue
+
+          var link = d.createElement('a')
+          var content = encodeURIComponent(nbs[j].innerHTML)
+          var filename = nbs[j].getAttribute('rel').replace('.ipynb', '.html')
+          link.setAttribute('href', 'data:text/plain;charset=utf-8,' + content)
+          link.setAttribute('download', filename)
+
+          d.body.appendChild(link)
+          link.click()
+          d.body.removeChild(link)
+          break
+        }
+      })
+
+      var fs = d.getElementById('file-selector')
+      fs.addEventListener('change', function () {
+        var nbs = d.querySelectorAll('div.rendered-notebook')
+        for (var j = 0; j < nbs.length; j++) {
+          if (nbs[j].getAttribute('rel') == fs.value) {
+            nbs[j].style.display = 'block'
+            continue
+          }
+
+          nbs[j].style.display = 'none'
+        }
+      })
+
+      var dz = d.createElement('div')
+      dz.style.visibility = 'hidden'
+      dz.setAttribute('id', 'dropzone')
+      d.getElementsByTagName('body')[0].appendChild(dz)
+
+      // we need a separate listener for the windows,
+      // to enable the dropzone
+      // otherwise it'd 'hijack' all clicks and everything
+      window.addEventListener('dragenter', function (e) {
+        dz.style.opacity = 0.3
+        dz.style.visibility = ''
+      })
+
+      dz.addEventListener('dragenter', dzenter, false)
+      dz.addEventListener('dragover', dzover, false)
+      dz.addEventListener('drop', dzdrop, false)
+
+      function dzenter(e) {
+        e.stopPropagation()
+        e.preventDefault()
+      }
+      function dzover(e) {
+        e.stopPropagation()
+        e.preventDefault()
+      }
+      function dzdrop(e) {
+        dz.style.opacity = 0
+        dz.style.visibility = 'hidden'
+
+        e.stopPropagation()
+        e.preventDefault()
+
+        var fns = e.dataTransfer.files
+
+        renderFiles(fns)
+      }
+
+      function renderFiles(fns) {
+        d.getElementById('instructions').style.display = 'none'
+        fs.style.display = 'block'
+        download_notebook.style.display = 'block'
+
+        for (var j = 0; j < fns.length; j++) {
+          var fn = fns[j]
+
+          if (!fn.name.endsWith('.ipynb')) {
+            console.log('File ' + fn.name + ' not a Jupyter notebook, skipping')
+            continue
+          }
+
+          var rd = new FileReader()
+
+          rd.addEventListener(
+            'load',
+            (function (j, rd, fn) {
+              return function () {
+                var dt = JSON.parse(rd.result)
+
+                // Does a container for this file exist already?
+                // If not, create it
+                var tg = doc.querySelector('div[rel="' + fn.name + '"]')
+                if (tg === null) {
+                  tg = d.createElement('div')
+                  tg.setAttribute('class', 'rendered-notebook')
+                  tg.setAttribute('rel', fn.name)
+                  doc.appendChild(tg)
+                }
+
+                // hide rendered notebook iff
+                //  1) it's the first one loaded, or
+                //  2) it's the same one as already showed (refresh)
+                if (
+                  !(
+                    fs.getElementsByTagName('option').length == 0 ||
+                    fs.value == fn.name
+                  )
+                )
+                  tg.style.display = 'none'
+
+                // populate the <select>
+                if (
+                  fs.querySelector('option[value="' + fn.name + '"]') === null
+                ) {
+                  var op = d.createElement('option')
+                  op.textContent = fn.name
+                  fs.appendChild(op)
+                }
+
+                notebook_viewer.render(dt, tg)
+              }
+            })(j, rd, fn)
+          )
+
+          rd.readAsText(fn)
+        }
+      }
+
+      // github rendering shenanigans
+      var ghl = document.getElementById('github-link')
+
+      ghl.addEventListener('keyup', x => {
+        // TODO: verify the link via regexp or something
+        // and change the input's css accordingly (red border)
+        window.location.hash = btoa(ghl.value)
+        render_gh_files(ghl.value)
+      })
+
+      // what if we loaded a site with a hash already
+      if (window.location.hash.length > 1) {
+        ghl.value = atob(window.location.hash.slice(1))
+        var event = new CustomEvent('keyup')
+        ghl.dispatchEvent(event)
+      }
+
+      // `atob` won't decode utf8 characters correctly, we need to do more about this
+      // taken from this excellent answer https://stackoverflow.com/a/30106551
+      function b64DecodeUnicode(str) {
+        return decodeURIComponent(
+          atob(str)
+            .split('')
+            .map(function (c) {
+              return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+            })
+            .join('')
+        )
+      }
+
+      async function fetch_ipynb_content_raw(url) {
+        if (input_url.startsWith('https://raw.githubusercontent.com')) {
+          api_url = input_url
+        } else {
+          // extract relevant bits from the URL and create a URL for the Github API
+          const ghparts = new RegExp(
+            /https:\/\/github.com\/(.+?)\/(.+?)\/blob\/(.+?)\/(.+\.ipynb)/
+          )
+          const m = input_url.match(ghparts)
+          if (!m) {
+            // TODO: render some placem
+            console.error('invalid URL ' + input_url)
+            return
+          }
+          filename = m[4].split('/').pop()
+          filename = decodeURI(filename)
+          // const api_url = `https://api.github.com/repos/${m[1]}/${m[2]}/contents/${m[4]}?ref=${m[3]}`
+          api_url = `https://raw.githubusercontent.com/${m[1]}/${m[2]}/${m[3]}/${m[4]}`
+
+          // const api_url = `https://api.github.com/repos/${m[1]}/${m[2]}/contents`
+          console.log(`translated ${input_url} into ${api_url}, fetching`)
+        }
+
+        const dd = await fetch(api_url) // TODO: this could fail on API limits
+        const dt = await dd.json()
+        return dt;
+      }
+
+      async function render_gh_files(input_url, filename) {
+        console.log('rendering')
+        // const hs = window.location.hash.slice(1); // without '#'
+        // const hsurl = atob(hs); // base64 -> text
+
+        let api_url;
+        let dt;
+
+        if (input_url.startsWith('https://api.github.com/')) {
+          // extract relevant bits from the URL and create a URL for the Github API
+          const dd = await fetch(input_url);
+          dt = await dd.json();
+
+          const content = atob(dt["content"]);
+          dt = JSON.parse(content);
+        }
+        else if (input_url.startsWith('https://raw.githubusercontent.com') || input_url.startsWith('https://github.com')) {
+          dt = await fetch_ipynb_content_raw(input_url);
+        }
+
+        d.getElementById('instructions').style.display = 'none'
+
+        tg = d.createElement('div')
+        tg.setAttribute('class', 'rendered-notebook')
+        tg.setAttribute('rel', input_url)
+
+        const notebook_content = document.getElementById('notebook-content')
+        // clear previous input
+        notebook_content.innerHTML = ''
+        notebook_content.appendChild(tg)
+
+        notebook_viewer.render(dt, tg)
+
+        document.getElementById('download-notebook').style.display = 'block'
+
+        document.getElementById(
+          'serving-info'
+        ).innerHTML = `Serving <code>${filename}</code>. <a href='${window.location}'>Permanent link to this render</a> / <a href='${input_url}'>original Github source</a>, <a href='${api_url}'>API source data</a>`
+        return
+      }
+
+      // async function recursive_get_all_filetype(api_url, filetype) {
+      //   const fetch_promise = await fetch(api_url)
+      //   const gh_dir_listing = await fetch_promise.json()
+
+      //   let output = []
+
+      //   for (let i = 0; i < gh_dir_listing.length; i++) {
+      //     const item = gh_dir_listing[i]
+      //     if (item['type'] === 'dir') {
+      //       // recursive walk
+      //       //item["git_url"]
+      //       const nested_items = await recursive_get_all_filetype(
+      //         item['_links']['self'],
+      //         filetype
+      //       )
+      //       output.push(...nested_items)
+      //     } else if (
+      //       item['type'] === 'file' &&
+      //       item['download_url'].endsWith(filetype)
+      //     ) {
+      //       output.push(item['download_url'])
+      //     }
+      //   }
+
+      //   return output
+      // }
+
+      // function build_sidebar(url_list) {
+      //   const sidebar = document.getElementById('sidebar_ipynb')
+
+      //   for (let i = 0; i < url_list.length; ++i) {
+      //     const url = url_list[i]
+
+      //     const notebook_name_regex = new RegExp(/.+\/(.+\.ipynb)/)
+      //     const notebook_name_match = url.match(notebook_name_regex)
+      //     if (!notebook_name_match) {
+      //       // TODO: render some placem
+      //       console.error('invalid URL ' + url)
+      //       return
+      //     }
+      //     const notebook_name = notebook_name_match[1]
+      //     console.log(notebook_name)
+
+      //     const a = document.createElement('a')
+      //     a.text = notebook_name
+      //     a.href = '#'
+      //     a.setAttribute(
+      //       'onclick',
+      //       `render_gh_files('${url}', '${notebook_name}'); return false;`
+      //     )
+      //     // a.addEventListener('onclick', function() {
+      //     //     console.log("hi");
+      //     //     render_gh_files(a.text);
+      //     // }, false); // The most appropiate way
+
+      //     sidebar.appendChild(a)
+      //   }
+      // }
+      // recursive_get_all_filetype(
+      //     `https://api.github.com/repos/${target_repo}/contents/`,
+      //     "ipynb"
+      // ).then(all_ipynbs => {
+      //         build_sidebar(all_ipynbs);
+      //     })
+      //     .catch(err => {
+      //         // Deal with the fact the chain failed
+      //         console.log(err);
+      //     });
+
+      // const api_url = "https://api.github.com/repos/soraxas/plotting-gallery/git/blobs/0c13b72213246d99d0cdc8f173272271d76b5a96";
+      // fetch(api_url).then(dd => {
+      //   dd.json().then(dt => {
+      //     const content = atob(dt["content"]);
+      //     console.log(content);
+      //   })
+      // }) // TODO: this could fail on API limits
+
+
+      function build_sidebar(url_list) {
+        const sidebar = document.getElementById('sidebar_ipynb')
+
+        for (let i = 0; i < url_list.length; ++i) {
+          const url = url_list[i][0];
+          const notebook_name = url_list[i][1];
+
+          console.log(url)
+          console.log(notebook_name)
+
+          const a = document.createElement('a')
+          a.text = notebook_name
+          a.href = '#'
+          a.setAttribute(
+            'onclick',
+            `render_gh_files('${url}', '${notebook_name}'); return false;`
+          )
+          // a.addEventListener('onclick', function() {
+          //     console.log("hi");
+          //     render_gh_files(a.text);
+          // }, false); // The most appropiate way
+
+          sidebar.appendChild(a)
+        }
+      }
+
+
+      const api_url = `https://api.github.com/repos/${target_repo}/git/trees/master?recursive=true`;
+      // render_gh_files(api_url);
+      fetch(api_url).then(repo_structure_ => {
+        repo_structure_.json().then(repo_structure => {
+          let urls = [];
+          for (let i = 0; i < repo_structure["tree"].length; ++i) {
+            const item = repo_structure["tree"][i];
+            if (item["type"] === "blob" && item["path"].endsWith(".ipynb")) {
+              urls.push([item["url"], item["path"]]);
+            }
+          }
+          build_sidebar(urls);
+        })
+      }) // TODO: this could fail on API limits
+      // const dt = await
+
+
+
+
+      // recursive_get_all_filetype(
+      //     `https://api.github.com/repos/${target_repo}/contents/`,
+      //     "ipynb"
+      // ).then(all_ipynbs => {
+      //         build_sidebar(all_ipynbs);
+      //     })
+      //     .catch(err => {
+      //         // Deal with the fact the chain failed
+      //         console.log(err);
+      //     });
+
+    //   build_sidebar([
+    //     'https://raw.githubusercontent.com/soraxas/plotting-gallery/master/plots/BlendedHeatmap_and_PedestrianTrajectory.ipynb',
+    //     'https://raw.githubusercontent.com/soraxas/plotting-gallery/master/tikz/antenna_rf.ipynb',
+    //     'https://raw.githubusercontent.com/soraxas/plotting-gallery/master/tikz/circle_dimension_drawing.ipynb'
+    //   ])
+    </script>
+  </body>
+</html>
