@@ -10,134 +10,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
     <script src='assets/nbv.js'></script>
-    <style type="text/css">
-      /* body {
-         font: 0.8em Arial, sans-serif;
-         background-color: #eee;
-         } */
-      body {
-        margin: 0;
-        font-family: 'Lato', sans-serif;
-        background-color: #eee;
-      }
-      div#instructions {
-        max-width: 960px;
-        font-size: 2em;
-        color: rgb(108, 108, 108);
-        text-align: center;
-        padding-top: 10%;
-        margin: 0 auto;
-      }
-      div#instructions small {
-        font-size: 0.7em;
-      }
-      div#dropzone {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1000;
-        background-color: #7d7;
-        opacity: 0;
-        transition: visibility 500ms, opacity 500ms;
-      }
-      select#file-selector {
-        display: none;
-        /*display: block;*/
-        font-size: 2em;
-        margin: 0 auto;
-      }
-      button#download-notebook {
-        display: none;
-        margin: 1em auto 0 auto;
-      }
-      input#github-link {
-        font-size: 1em;
-        text-align: center;
-        width: 60%;
-        margin: 0.3em auto;
-      }
-      input#github-link::placeholder {
-        color: #ccc;
-      }
-      div#serving-info {
-        font-size: 1.2em;
-        font-style: italic;
-        margin-top: 1em;
-        text-align: center;
-      }
-      div#contact {
-        width: 42em;
-        margin: 5em auto 0 auto;
-        font-style: italic;
-      }
-      .sidebar {
-        margin: 0;
-        padding: 0;
-        width: 200px;
-        background-color: #f1f1f1;
-        position: fixed;
-        height: 100%;
-        overflow: auto;
-      }
-      .sidebar a {
-        display: block;
-        color: black;
-        padding: 16px;
-        text-decoration: none;
-      }
-      .sidebar a.active {
-        background-color: #04aa6d;
-        color: white;
-      }
-      .sidebar a:hover:not(.active) {
-        background-color: #555;
-        color: white;
-      }
-      div.content {
-        margin-left: 200px;
-        padding: 1px 16px;
-        height: 1000px;
-      }
-      @media screen and (max-width: 700px) {
-        .sidebar {
-          width: 100%;
-          height: auto;
-          position: relative;
-        }
-        .sidebar a {
-          float: left;
-        }
-        div.content {
-          margin-left: 0;
-        }
-      }
-      @media screen and (max-width: 400px) {
-        .sidebar a {
-          text-align: center;
-          float: none;
-        }
-      }
-    </style>
+    <link rel='stylesheet' href='assets/main.css'/>
   </head>
   <body>
     <div class="sidebar">
       <a class="active" href="#home">Home</a>
-      <div id="sidebar_ipynb">
-        <!-- <a href="#news">News</a>
-               <a href="#contact">Contact</a>
-               <a href="#about">About</a> -->
-      </div>
+      <div id="sidebar_ipynb"></div>
     </div>
     <div class="content">
-      <!-- <a href="https://github.com/kokes/nbviewer.js"
-        ><img
-          style="position: absolute; top: 0; right: 0; border: 0"
-          src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67"
-          alt="Fork me on GitHub"
-          data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"
-      /></a> -->
       <div id="doc">
         <select id="file-selector"></select>
         <button id="download-notebook">Download this notebook in HTML</button>
@@ -342,7 +222,6 @@
           }
           filename = m[4].split('/').pop()
           filename = decodeURI(filename)
-          // const api_url = `https://api.github.com/repos/${m[1]}/${m[2]}/contents/${m[4]}?ref=${m[3]}`
           api_url = `https://raw.githubusercontent.com/${m[1]}/${m[2]}/${m[3]}/${m[4]}`
 
           // const api_url = `https://api.github.com/repos/${m[1]}/${m[2]}/contents`
@@ -395,84 +274,6 @@
         return
       }
 
-      // async function recursive_get_all_filetype(api_url, filetype) {
-      //   const fetch_promise = await fetch(api_url)
-      //   const gh_dir_listing = await fetch_promise.json()
-
-      //   let output = []
-
-      //   for (let i = 0; i < gh_dir_listing.length; i++) {
-      //     const item = gh_dir_listing[i]
-      //     if (item['type'] === 'dir') {
-      //       // recursive walk
-      //       //item["git_url"]
-      //       const nested_items = await recursive_get_all_filetype(
-      //         item['_links']['self'],
-      //         filetype
-      //       )
-      //       output.push(...nested_items)
-      //     } else if (
-      //       item['type'] === 'file' &&
-      //       item['download_url'].endsWith(filetype)
-      //     ) {
-      //       output.push(item['download_url'])
-      //     }
-      //   }
-
-      //   return output
-      // }
-
-      // function build_sidebar(url_list) {
-      //   const sidebar = document.getElementById('sidebar_ipynb')
-
-      //   for (let i = 0; i < url_list.length; ++i) {
-      //     const url = url_list[i]
-
-      //     const notebook_name_regex = new RegExp(/.+\/(.+\.ipynb)/)
-      //     const notebook_name_match = url.match(notebook_name_regex)
-      //     if (!notebook_name_match) {
-      //       // TODO: render some placem
-      //       console.error('invalid URL ' + url)
-      //       return
-      //     }
-      //     const notebook_name = notebook_name_match[1]
-      //     console.log(notebook_name)
-
-      //     const a = document.createElement('a')
-      //     a.text = notebook_name
-      //     a.href = '#'
-      //     a.setAttribute(
-      //       'onclick',
-      //       `render_gh_files('${url}', '${notebook_name}'); return false;`
-      //     )
-      //     // a.addEventListener('onclick', function() {
-      //     //     console.log("hi");
-      //     //     render_gh_files(a.text);
-      //     // }, false); // The most appropiate way
-
-      //     sidebar.appendChild(a)
-      //   }
-      // }
-      // recursive_get_all_filetype(
-      //     `https://api.github.com/repos/${target_repo}/contents/`,
-      //     "ipynb"
-      // ).then(all_ipynbs => {
-      //         build_sidebar(all_ipynbs);
-      //     })
-      //     .catch(err => {
-      //         // Deal with the fact the chain failed
-      //         console.log(err);
-      //     });
-
-      // const api_url = "https://api.github.com/repos/soraxas/plotting-gallery/git/blobs/0c13b72213246d99d0cdc8f173272271d76b5a96";
-      // fetch(api_url).then(dd => {
-      //   dd.json().then(dt => {
-      //     const content = atob(dt["content"]);
-      //     console.log(content);
-      //   })
-      // }) // TODO: this could fail on API limits
-
-
       function build_sidebar(url_list) {
         const sidebar = document.getElementById('sidebar_ipynb')
 
@@ -490,11 +291,6 @@
             'onclick',
             `render_gh_files('${url}', '${notebook_name}'); return false;`
           )
-          // a.addEventListener('onclick', function() {
-          //     console.log("hi");
-          //     render_gh_files(a.text);
-          // }, false); // The most appropiate way
-
           sidebar.appendChild(a)
         }
       }
@@ -514,27 +310,6 @@
           build_sidebar(urls);
         })
       }) // TODO: this could fail on API limits
-      // const dt = await
-
-
-
-
-      // recursive_get_all_filetype(
-      //     `https://api.github.com/repos/${target_repo}/contents/`,
-      //     "ipynb"
-      // ).then(all_ipynbs => {
-      //         build_sidebar(all_ipynbs);
-      //     })
-      //     .catch(err => {
-      //         // Deal with the fact the chain failed
-      //         console.log(err);
-      //     });
-
-    //   build_sidebar([
-    //     'https://raw.githubusercontent.com/soraxas/plotting-gallery/master/plots/BlendedHeatmap_and_PedestrianTrajectory.ipynb',
-    //     'https://raw.githubusercontent.com/soraxas/plotting-gallery/master/tikz/antenna_rf.ipynb',
-    //     'https://raw.githubusercontent.com/soraxas/plotting-gallery/master/tikz/circle_dimension_drawing.ipynb'
-    //   ])
     </script>
   </body>
 </html>
