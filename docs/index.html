@@ -1,315 +1,189 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset='utf-8' />
-    <title>Plotting Gallery</title>
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css'/>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/prism.min.js' data-manual></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/components/prism-python.min.js' data-manual></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
-    <script src='assets/nbv.js'></script>
-    <link rel='stylesheet' href='assets/main.css'/>
-  </head>
-  <body>
-    <div class="sidebar">
-      <a class="active" href="#home">Home</a>
-      <div id="sidebar_ipynb"></div>
-    </div>
-    <div class="content">
-      <div id="doc">
-        <select id="file-selector"></select>
-        <button id="download-notebook">Download this notebook in HTML</button>
-        <div id="instructions">
-          Drag and drop Jupyter notebooks anywhere here...<br />
-          or paste a link from Github: <br />
-          <input id="github-link" placeholder="https://github.com/..." />
-        </div>
-        <div id="serving-info"></div>
-        <div id="notebook-content"></div>
-      </div>
-      <div id="contact"></div>
-    </div>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta content="width=device-width, initial-scale=1.0" name="viewport">
+      <title>Plotting Gallery</title>
+      <meta content="" name="description">
+      <meta content="" name="keywords">
+      <!-- Google Fonts -->
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+      <!-- Vendor CSS Files -->
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+      <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+      <!-- Template Main CSS File -->
+      <link href="assets/css/style.css" rel="stylesheet">
+   </head>
+   <body>
+      <!-- ======= Mobile nav toggle button ======= -->
+      <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
+      <!-- ======= Header ======= -->
+      <header id="header">
+         <div class="d-flex flex-column">
+            <div class="profile">
+               <img src="https://avatars.githubusercontent.com/u/22362177" alt="" class="img-fluid rounded-circle">
+               <h1 class="text-light"><a href="index.html">Plotting Gallery</a></h1>
+               <div class="social-links mt-3 text-center">
+                  <a href="https://cs.tinyiu.com" class="home"><i class="bx bxs-home-heart"></i></a>
+                  <a href="https://github.com/soraxas/plotting-gallery" class="github"><i class="bx bxl-github"></i></a>
+                  <!-- <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+                     <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+                     <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+                     <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a> -->
+               </div>
+            </div>
+            <nav id="navbar" class="nav-menu navbar">
+               <ul>
+                  <!-- <li><a href="#notebook" class="nav-link scrollto"><i class="bx bx-server"></i> <span>Services</span></a></li> -->
+                  <div id="sidebar_ipynb">
+                  </div>
+               </ul>
+            </nav>
+            <!-- .nav-menu -->
+         </div>
+      </header>
+      <!-- End Header -->
+      <!-- ======= Services Section ======= -->
+      <section id="notebook" class="services">
+         <div class="container">
+            <div class="section-title">
+               <h2>Jupyter Notebook Showcase</h2>
+            </div>
+            <p>Notebooks includes <span id="notebook-lists"></span></p>
+            <div id="serving-info">
+               Click on one of the link in the sidebar to begin rendering.
+            </div>
+            <br/>
+            <div id="notebook-content"></div>
+         </div>
+      </section>
+      <!-- End Services Section -->
+      </main><!-- End #main -->
+      <!-- ======= Footer ======= -->
+      <footer id="footer">
+         <div class="container">
+            <div>
+              @ <a href="https://github.com/soraxas/plotting-gallery" class="github">soraxas/plotting-gallery</a>
+            </div>
+         </div>
+      </footer>
+      <!-- End  Footer -->
+      <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+      <!-- Vendor JS Files -->
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+      <!-- Typed text (animated typing effect)-->
+      <script type="text/javascript" src="https://unpkg.com/typed.js@~2.0.11"></script>
+      <!-- ScrollMonitor (manages events for elements scrolling in and out of view) -->
+      <script type="text/javascript" src="https://unpkg.com/scrollmonitor@~1.2.4"></script>
+      <!-- Template Main JS File -->
+      <script src="assets/js/main.js"></script>
+      <script src='assets/nbv.js'></script>
+      <script src='assets/render_gh_file.js'></script>
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js'></script>
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/prism.min.js' data-manual></script>
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/components/prism-python.min.js' data-manual></script>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+      <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+      <script>
+         const target_repo = 'soraxas/plotting-gallery'
 
-    <script type="text/javascript">
-      const target_repo = 'soraxas/plotting-gallery'
-      const d = document
-      const doc = d.getElementById('doc')
-      const download_notebook = d.getElementById('download-notebook')
-      if (!window.marked || !window.Prism || !window.katex) {
-        throw new Error(
-          'expecting libraries marked.js, Prism.js and KaTeX to be present'
-        )
-      }
-      const notebook_viewer = nbv_constructor(d, {
-        katex: window.katex,
-        prism: window.Prism,
-        marked: window.marked
-      })
+               function build_sidebar(url_list) {
+               const sidebar = document.getElementById('sidebar_ipynb')
 
-      download_notebook.addEventListener('click', function () {
-        var nbs = d.querySelectorAll('div.rendered-notebook')
-        for (var j = 0; j < nbs.length; j++) {
-          if (nbs[j].style.display == 'none') continue
+               for (let item of url_list) {
+                 const url = item.url;
 
-          var link = d.createElement('a')
-          var content = encodeURIComponent(nbs[j].innerHTML)
-          var filename = nbs[j].getAttribute('rel').replace('.ipynb', '.html')
-          link.setAttribute('href', 'data:text/plain;charset=utf-8,' + content)
-          link.setAttribute('download', filename)
+                 // console.log(url)
+                 // console.log(notebook_name)
 
-          d.body.appendChild(link)
-          link.click()
-          d.body.removeChild(link)
-          break
-        }
-      })
-
-      var fs = d.getElementById('file-selector')
-      fs.addEventListener('change', function () {
-        var nbs = d.querySelectorAll('div.rendered-notebook')
-        for (var j = 0; j < nbs.length; j++) {
-          if (nbs[j].getAttribute('rel') == fs.value) {
-            nbs[j].style.display = 'block'
-            continue
-          }
-
-          nbs[j].style.display = 'none'
-        }
-      })
-
-      var dz = d.createElement('div')
-      dz.style.visibility = 'hidden'
-      dz.setAttribute('id', 'dropzone')
-      d.getElementsByTagName('body')[0].appendChild(dz)
-
-      // we need a separate listener for the windows,
-      // to enable the dropzone
-      // otherwise it'd 'hijack' all clicks and everything
-      window.addEventListener('dragenter', function (e) {
-        dz.style.opacity = 0.3
-        dz.style.visibility = ''
-      })
-
-      dz.addEventListener('dragenter', dzenter, false)
-      dz.addEventListener('dragover', dzover, false)
-      dz.addEventListener('drop', dzdrop, false)
-
-      function dzenter(e) {
-        e.stopPropagation()
-        e.preventDefault()
-      }
-      function dzover(e) {
-        e.stopPropagation()
-        e.preventDefault()
-      }
-      function dzdrop(e) {
-        dz.style.opacity = 0
-        dz.style.visibility = 'hidden'
-
-        e.stopPropagation()
-        e.preventDefault()
-
-        var fns = e.dataTransfer.files
-
-        renderFiles(fns)
-      }
-
-      function renderFiles(fns) {
-        d.getElementById('instructions').style.display = 'none'
-        fs.style.display = 'block'
-        download_notebook.style.display = 'block'
-
-        for (var j = 0; j < fns.length; j++) {
-          var fn = fns[j]
-
-          if (!fn.name.endsWith('.ipynb')) {
-            console.log('File ' + fn.name + ' not a Jupyter notebook, skipping')
-            continue
-          }
-
-          var rd = new FileReader()
-
-          rd.addEventListener(
-            'load',
-            (function (j, rd, fn) {
-              return function () {
-                var dt = JSON.parse(rd.result)
-
-                // Does a container for this file exist already?
-                // If not, create it
-                var tg = doc.querySelector('div[rel="' + fn.name + '"]')
-                if (tg === null) {
-                  tg = d.createElement('div')
-                  tg.setAttribute('class', 'rendered-notebook')
-                  tg.setAttribute('rel', fn.name)
-                  doc.appendChild(tg)
-                }
-
-                // hide rendered notebook iff
-                //  1) it's the first one loaded, or
-                //  2) it's the same one as already showed (refresh)
-                if (
-                  !(
-                    fs.getElementsByTagName('option').length == 0 ||
-                    fs.value == fn.name
-                  )
-                )
-                  tg.style.display = 'none'
-
-                // populate the <select>
-                if (
-                  fs.querySelector('option[value="' + fn.name + '"]') === null
-                ) {
-                  var op = d.createElement('option')
-                  op.textContent = fn.name
-                  fs.appendChild(op)
-                }
-
-                notebook_viewer.render(dt, tg)
-              }
-            })(j, rd, fn)
-          )
-
-          rd.readAsText(fn)
-        }
-      }
-
-      // github rendering shenanigans
-      var ghl = document.getElementById('github-link')
-
-      ghl.addEventListener('keyup', x => {
-        // TODO: verify the link via regexp or something
-        // and change the input's css accordingly (red border)
-        window.location.hash = btoa(ghl.value)
-        render_gh_files(ghl.value)
-      })
-
-      // what if we loaded a site with a hash already
-      if (window.location.hash.length > 1) {
-        ghl.value = atob(window.location.hash.slice(1))
-        var event = new CustomEvent('keyup')
-        ghl.dispatchEvent(event)
-      }
-
-      // `atob` won't decode utf8 characters correctly, we need to do more about this
-      // taken from this excellent answer https://stackoverflow.com/a/30106551
-      function b64DecodeUnicode(str) {
-        return decodeURIComponent(
-          atob(str)
-            .split('')
-            .map(function (c) {
-              return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-            })
-            .join('')
-        )
-      }
-
-      async function fetch_ipynb_content_raw(url) {
-        if (input_url.startsWith('https://raw.githubusercontent.com')) {
-          api_url = input_url
-        } else {
-          // extract relevant bits from the URL and create a URL for the Github API
-          const ghparts = new RegExp(
-            /https:\/\/github.com\/(.+?)\/(.+?)\/blob\/(.+?)\/(.+\.ipynb)/
-          )
-          const m = input_url.match(ghparts)
-          if (!m) {
-            // TODO: render some placem
-            console.error('invalid URL ' + input_url)
-            return
-          }
-          filename = m[4].split('/').pop()
-          filename = decodeURI(filename)
-          api_url = `https://raw.githubusercontent.com/${m[1]}/${m[2]}/${m[3]}/${m[4]}`
-
-          // const api_url = `https://api.github.com/repos/${m[1]}/${m[2]}/contents`
-          console.log(`translated ${input_url} into ${api_url}, fetching`)
-        }
-
-        const dd = await fetch(api_url) // TODO: this could fail on API limits
-        const dt = await dd.json()
-        return dt;
-      }
-
-      async function render_gh_files(input_url, filename) {
-        console.log('rendering')
-        // const hs = window.location.hash.slice(1); // without '#'
-        // const hsurl = atob(hs); // base64 -> text
-
-        let api_url;
-        let dt;
-
-        if (input_url.startsWith('https://api.github.com/')) {
-          // extract relevant bits from the URL and create a URL for the Github API
-          const dd = await fetch(input_url);
-          dt = await dd.json();
-
-          const content = atob(dt["content"]);
-          dt = JSON.parse(content);
-        }
-        else if (input_url.startsWith('https://raw.githubusercontent.com') || input_url.startsWith('https://github.com')) {
-          dt = await fetch_ipynb_content_raw(input_url);
-        }
-
-        d.getElementById('instructions').style.display = 'none'
-
-        tg = d.createElement('div')
-        tg.setAttribute('class', 'rendered-notebook')
-        tg.setAttribute('rel', input_url)
-
-        const notebook_content = document.getElementById('notebook-content')
-        // clear previous input
-        notebook_content.innerHTML = ''
-        notebook_content.appendChild(tg)
-
-        notebook_viewer.render(dt, tg)
-
-        document.getElementById('download-notebook').style.display = 'block'
-
-        document.getElementById(
-          'serving-info'
-        ).innerHTML = `Serving <code>${filename}</code>. <a href='${window.location}'>Permanent link to this render</a> / <a href='${input_url}'>original Github source</a>, <a href='${api_url}'>API source data</a>`
-        return
-      }
-
-      function build_sidebar(url_list) {
-        const sidebar = document.getElementById('sidebar_ipynb')
-
-        for (let i = 0; i < url_list.length; ++i) {
-          const url = url_list[i][0];
-          const notebook_name = url_list[i][1];
-
-          console.log(url)
-          console.log(notebook_name)
-
-          const a = document.createElement('a')
-          a.text = notebook_name
-          a.href = '#'
-          a.setAttribute(
-            'onclick',
-            `render_gh_files('${url}', '${notebook_name}'); return false;`
-          )
-          sidebar.appendChild(a)
-        }
-      }
+                 const li = document.createElement('li');
+                 const a = document.createElement('a');
+                 const icon = document.createElement('i');
+                 icon.setAttribute('class', "bx bx-file-blank");
+                 a.appendChild(icon);
+                 li.appendChild(a);
+                 a.href = '#notebook'
+                 a.setAttribute(
+                   'onclick',
+                   `render_gh_files('${url}', '${item.path_name}'); return true;`
+                 )
+                 const span = document.createElement("span");
 
 
-      const api_url = `https://api.github.com/repos/${target_repo}/git/trees/master?recursive=true`;
-      // render_gh_files(api_url);
-      fetch(api_url).then(repo_structure_ => {
-        repo_structure_.json().then(repo_structure => {
-          let urls = [];
-          for (let i = 0; i < repo_structure["tree"].length; ++i) {
-            const item = repo_structure["tree"][i];
-            if (item["type"] === "blob" && item["path"].endsWith(".ipynb")) {
-              urls.push([item["url"], item["path"]]);
-            }
-          }
-          build_sidebar(urls);
-        })
-      }) // TODO: this could fail on API limits
-    </script>
-  </body>
+                 let style_name = item.style_name;
+                 // remove underscore _
+                 style_name = style_name.replaceAll('_', ' ');
+                 // newline
+                 style_name = style_name.replace(/([^<])[/]/, '$1/<br/>');
+                 // remove file suffix
+                 style_name = style_name.replace(/.ipynb/, '');
+                 // console.log(style_name);
+
+
+                 span.innerHTML  = style_name;
+                 span.setAttribute("class", "wraplongword");
+                 a.appendChild(span);
+                 sidebar.appendChild(a);
+               }
+             }
+
+             const api_url = `https://api.github.com/repos/${target_repo}/git/trees/master?recursive=true`;
+             // render_gh_files(api_url);
+             fetch(api_url).then(repo_structure_ => {
+               repo_structure_.json().then(repo_structure => {
+                 let urls = [];
+                 let notebook_names = [];
+                 for (let i = 0; i < repo_structure["tree"].length; ++i) {
+                   const item = repo_structure["tree"][i];
+                   if (item["type"] === "blob" && item["path"].endsWith(".ipynb")) {
+                     let name = item["path"];
+
+                     // add color
+                     name = name.replace(/^([^/]*)?[/](.*)/,
+                       '<span style="color: cyan;">$1</span>' +
+                       '<span style="color: orange; font-weight: bold;">/</span>' +
+                       '<span >$2</span>'
+                       );
+                     name = `<code>${name}</code>`
+
+                     const ele = {
+                       "url": item["url"],
+                       "path_name": item["path"],
+                       "style_name": name,
+                     }
+
+                     urls.push(ele);
+                     notebook_names.push(ele.style_name);
+                   }
+                 }
+                 // document.getElementById("notebook-lists").setAttribute("data-typed-items", notebook_names.join(", "));
+
+                 const typed = new Typed('#notebook-lists', {
+                 /**
+                  * @property {array} strings strings to be typed
+                  * @property {string} stringsElement ID of element containing string children
+                  */
+                 strings: notebook_names,
+                 stringsElement: null,
+                 typeSpeed: 25,
+                 shuffle: true,
+                 loop: true,
+               });
+
+                 build_sidebar(urls);
+               })
+             }) // TODO: this could fail on API limits
+
+             if (!window.marked || !window.Prism || !window.katex) {
+               throw new Error(
+                 'expecting libraries marked.js, Prism.js and KaTeX to be present'
+               )
+             }
+             const notebook_viewer = nbv_constructor(document, {
+               katex: window.katex,
+               prism: window.Prism,
+               marked: window.marked
+             })
+      </script>
+   </body>
 </html>
