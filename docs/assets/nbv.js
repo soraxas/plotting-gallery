@@ -20,7 +20,7 @@ const nbv_constructor = (function(document, deps) {
         while (target.firstChild) {
             target.removeChild(target.firstChild);
         }
-        var t = d.createElement('div');
+        const t = d.createElement('div');
         t.setAttribute('style', [
             'max-width: 960px',
             'border: 1px solid #ccc',
@@ -34,15 +34,15 @@ const nbv_constructor = (function(document, deps) {
 
         // v4 has cells directly in the object, v3 had a list of
         // worksheets, each with a list of cells
-        var cells = obj.cells || function() {
-            var ret = [];
-            for (var j=0; j < obj.worksheets.length; j++) {
+        const cells = obj.cells || function() {
+            const ret = [];
+            for (let j=0; j < obj.worksheets.length; j++) {
                 ret = ret.concat(obj.worksheets[j].cells);
             }
             return ret;
         }();
 
-        for (var j=0; j < cells.length; j++) {
+        for (let j=0; j < cells.length; j++) {
             var tc = cells[j];
 
             var cell = d.createElement('div');
