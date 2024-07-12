@@ -42,9 +42,11 @@ def show_with_clean_interface():
     plt.show()
 
 
-def save_tight_image(name: str, clear: bool = True):
+def save_tight_image(name: str, clear: bool = True, **kwargs):
+    if "." not in name:
+        name = f"{name}.png"
     plt.axis("off")
-    plt.savefig(f"{name}.png", bbox_inches="tight")
+    plt.savefig(name, bbox_inches="tight", **kwargs)
     if clear:
         plt.cla()
         plt.clf()
